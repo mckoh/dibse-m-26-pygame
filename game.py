@@ -32,6 +32,7 @@ score = 0
 missed = 0
 running = True
 game_over = False
+factor = 1
 
 while running:
 
@@ -46,11 +47,19 @@ while running:
         player.x -= PLAYER_X_SPEED
     if (keys[pg.K_RIGHT] or keys[pg.K_d]) and player.x < WIDTH-PLAYER_WIDTH:
         player.x += PLAYER_X_SPEED
+    if keys[pg.K_r] and game_over:
+        game_over = False
+        coin.x = place_coin()
+        coin.y = -COIN_DIAMETER
+        player.x = WIDTH // 2 - PLAYER_WIDTH // 2
+        score = 0
+        missed = 0
+        factor = 1
 
     if not game_over:
 
         # Coin drop
-        coin.y += COIN_Y_SPEED
+        coin.y += COIN_Y_SPEED * factor
         if coin.y > HEIGHT:
             coin.x = place_coin()
             coin.y = -COIN_DIAMETER
@@ -61,6 +70,7 @@ while running:
             coin.x = place_coin()
             coin.y = -COIN_DIAMETER
             score += 1
+            factor += 0.1
 
         # Check scores
         if missed == 3:
